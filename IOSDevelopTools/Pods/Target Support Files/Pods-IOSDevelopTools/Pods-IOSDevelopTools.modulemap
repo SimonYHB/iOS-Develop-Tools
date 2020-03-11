@@ -1,0 +1,6 @@
+framework module Pods_IOSDevelopTools {
+  umbrella header "Pods-IOSDevelopTools-umbrella.h"
+
+  export *
+  module * { export * }
+}
