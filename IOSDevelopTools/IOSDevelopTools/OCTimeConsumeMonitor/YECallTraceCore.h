@@ -25,6 +25,11 @@ YEThreadCallRecord *getThreadCallRecord(int *count);
 void setMaxDepth(int depth); // 默认3层
 void setMinConsumeTime(uint64_t time); // 默认1000ms
 
+/**
+ 清空调用栈
+ */
+void clearCallRecords(void);
 bool callTraceEnable(void);
+
 
 #endif /* YECallTraceCore_h */

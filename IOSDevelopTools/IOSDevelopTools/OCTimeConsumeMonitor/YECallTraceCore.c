@@ -236,4 +236,12 @@ bool callTraceEnable() {
 }
 
 
+void clearCallRecords(void) {
+    if (threadCallRecords) {
+        free(threadCallRecords);
+        threadCallRecords = NULL;
+    }
+    recordsCurrentCount = 0;
+}
+
 #endif

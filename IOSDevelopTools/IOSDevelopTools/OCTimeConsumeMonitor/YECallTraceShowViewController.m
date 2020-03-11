@@ -28,6 +28,7 @@ static CGFloat TPHeaderHight = 100;
 @property (nonatomic, strong)UIButton *RecordBtn;
 @property (nonatomic, strong)UIButton *costTimeSortBtn;
 @property (nonatomic, strong)UIButton *callCountSortBtn;
+@property (nonatomic, strong)UIButton *clearBtn;
 @property (nonatomic, strong)UIButton *popVCBtn;
 @property (nonatomic, strong)UITableView *tpTableView;
 @property (nonatomic, strong)UILabel *tableHeaderViewLabel;
@@ -49,6 +50,7 @@ static CGFloat TPHeaderHight = 100;
     [self.view addSubview:self.RecordBtn];
     [self.view addSubview:self.costTimeSortBtn];
     [self.view addSubview:self.callCountSortBtn];
+    [self.view addSubview:self.clearBtn];
     [self.view addSubview:self.popVCBtn];
     [self.view addSubview:self.tpScrollView];
     [self.tpScrollView addSubview:self.tableHeaderViewLabel];
@@ -419,6 +421,12 @@ static CGFloat TPHeaderHight = 100;
     }
 }
 
+- (void)clickClearBtn
+{
+    clearCallRecords();
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 
 #pragma mark - get&set method
 
@@ -495,6 +503,15 @@ static CGFloat TPHeaderHight = 100;
         _callCountSortBtn.hidden = YES;
     }
     return _callCountSortBtn;
+}
+
+- (UIButton *)clearBtn
+{
+    if (!_clearBtn) {
+        _clearBtn = [self getTPBtnWithFrame:CGRectMake(200, 65, 60, 30) title:@"清空记录" sel:@selector(clickClearBtn)];
+        _clearBtn.hidden = NO;
+    }
+    return _clearBtn;
 }
 
 - (UIButton *)popVCBtn

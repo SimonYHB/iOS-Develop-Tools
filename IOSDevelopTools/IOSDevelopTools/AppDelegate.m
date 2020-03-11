@@ -18,7 +18,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     setMaxDepth(100);
-    setMinConsumeTime(100);
+    setMinConsumeTime(10);
     startMonitor();
     return YES;
 }

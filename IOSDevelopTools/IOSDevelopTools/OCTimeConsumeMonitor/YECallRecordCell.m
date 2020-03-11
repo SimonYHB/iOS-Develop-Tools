@@ -125,8 +125,10 @@
 {
     if (!_expandBtn) {
         _expandBtn = [[UIButton alloc] initWithFrame:CGRectMake(kDepthLabelWidth+kTimeLabelWidth+16, 0, 18, 18)];
-        [_expandBtn setBackgroundImage:[UIImage imageNamed:@"TPNOExpandIcon"] forState:UIControlStateNormal];
-        [_expandBtn setBackgroundImage:[UIImage imageNamed:@"TPExpandIcon"] forState:UIControlStateSelected];
+        [_expandBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        _expandBtn.titleLabel.font = [UIFont boldSystemFontOfSize:22];
+        [_expandBtn setTitle:@"+" forState:UIControlStateNormal];
+        [_expandBtn setTitle:@"-" forState:UIControlStateSelected];
         [_expandBtn addTarget:self action:@selector(clickExpandBtn:) forControlEvents:UIControlEventTouchUpInside];
         _expandBtn.hidden = YES;
     }
