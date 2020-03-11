@@ -1,13 +1,13 @@
 //
-//  YEOCCallTraceCore.h
+//  YECallTraceCore.h
 //  IOSDevelopTools
 //
 //  Created by 叶煌斌 on 2020/3/10.
 //  Copyright © 2020 SimonYe. All rights reserved.
 //
 
-#ifndef YEOCCallTraceCore_h
-#define YEOCCallTraceCore_h
+#ifndef YECallTraceCore_h
+#define YECallTraceCore_h
 
 #include <stdio.h>
 #include <objc/objc.h>
@@ -21,9 +21,10 @@ typedef struct {
 
 void startMonitor(void);
 void stopMonitor(void);
-YEThreadCallRecord *getThreadCallRecord(void);
+YEThreadCallRecord *getThreadCallRecord(int *count);
+void setMaxDepth(int depth); // 默认3层
+void setMinConsumeTime(uint64_t time); // 默认1000ms
 
-//void setMaxDepth(int depth);
-//void setCostMinTime(uint64_t time);
+bool callTraceEnable(void);
 
-#endif /* YEOCCallTraceCore_h */
+#endif /* YECallTraceCore_h */

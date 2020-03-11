@@ -1,13 +1,12 @@
 //
-//  YEOCCallTraceCore.c
+//  YECallTraceCore.c
 //  IOSDevelopTools
 //
 //  Created by 叶煌斌 on 2020/3/10.
 //  Copyright © 2020 SimonYe. All rights reserved.
 //
 
-#include "YEOCCallTraceCore.h"
-
+#include "YECallTraceCore.h"
 #include <stdlib.h>
 #include <dispatch/dispatch.h>
 #include <pthread.h>
@@ -16,6 +15,14 @@
 #include <sys/time.h>
 
 #ifndef __arm64__
+void startMonitor(void) {};
+void stopMonitor(void) {};
+YEThreadCallRecord *getThreadCallRecord(int *count){
+    return NULL;
+}
+void setMaxDepth(int depth) {};
+void setMinConsumeTime(uint64_t time) {};
+bool callTraceEnable() { return false };
 #else
 //用于记录方法
 typedef struct {
@@ -36,6 +43,7 @@ typedef struct {
 
 static id (*orgin_objc_msgSend)(id, SEL, ...);
 static pthread_key_t threadStackKey;
+static bool monitorEnabled = false;
 
 static YEThreadCallRecord *threadCallRecords = NULL;
 static int recordsCurrentCount;
@@ -46,7 +54,7 @@ static uint64_t minConsumeTime = 1000; // 设置记录的最小耗时
 
 
 
-#pragma private
+#pragma mark - private
 // 获取当前线程的调用栈
 ThreadMethodStack* getThreadMethodStack() {
     
@@ -85,7 +93,7 @@ void before_objc_msgSend(id self, SEL _cmd, uintptr_t lr) {
         newRecord->cls = object_getClass(self);
         newRecord->sel = _cmd;
         newRecord->lr = lr;
-        if (tms->isMainThread) {
+        if (tms->isMainThread & monitorEnabled) {
             struct timeval now;
             gettimeofday(&now, NULL);
             newRecord->time = (now.tv_sec % 100) * 1000000 + now.tv_usec;
@@ -99,15 +107,15 @@ uintptr_t after_objc_msgSend() {
     int nextIndex = tms->index--;
     MethodRecord *record = &tms->stack[nextIndex];
     
-    if (tms->isMainThread) {
+    if (tms->isMainThread & monitorEnabled) {
         struct timeval now;
         gettimeofday(&now, NULL);
         uint64_t time = (now.tv_sec % 100) * 1000000 + now.tv_usec;
-        if (time < record->time) {
-            time += 100 * 1000000;
-        }
+//        if (time < record->time) {
+//            time += 100 * 1000000;
+//        }
         uint64_t cost = time - record->time;
-        if (cost > minConsumeTime && tms->index < maxDepth) {
+        if (cost > minConsumeTime * 1000 && curIndex < maxDepth) {
             // 为记录栈分配内存
             if (!threadCallRecords) {
                 recordsAllocCount = 1024;
@@ -188,8 +196,9 @@ static void hook_objc_msgSend() {
 }
 
 
-#pragma public
+#pragma mark - public
 void startMonitor(void) {
+    monitorEnabled = true;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         pthread_key_create(&threadStackKey, cleanThreadStack);
@@ -202,10 +211,28 @@ void startMonitor(void) {
     });
 }
 void stopMonitor(void) {
-    
+    monitorEnabled = false;
 }
-YEThreadCallRecord *getThreadCallRecord(void) {
+YEThreadCallRecord *getThreadCallRecord(int *count) {
+    if (count) {
+        *count = recordsCurrentCount;
+    }
     return threadCallRecords;
+}
+
+
+void setMaxDepth(int depth)
+{
+    maxDepth = depth;
+}
+
+void setMinConsumeTime(uint64_t time)
+{
+    minConsumeTime = time;
+}
+
+bool callTraceEnable() {
+    return monitorEnabled;
 }
 
 
