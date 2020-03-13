@@ -19,10 +19,32 @@ typedef struct {
     int depth;
 } YEThreadCallRecord;
 
+
+/**
+ 开启OC耗时监控
+ */
 void startMonitor(void);
+
+/**
+ 停止OC耗时监控
+ */
 void stopMonitor(void);
+
+/**
+ 获取调用记录堆栈
+ 
+ @param count 返回栈元素个数
+ */
 YEThreadCallRecord *getThreadCallRecord(int *count);
+
+/**
+ 设置最大记录层级 (默认3层)
+ */
 void setMaxDepth(int depth); // 默认3层
+
+/**
+ 设置最小记录耗时 (默认1000ms)
+ */
 void setMinConsumeTime(uint64_t time); // 默认1000ms
 
 /**
