@@ -72,9 +72,7 @@ arm64 有64位处理器，能同时处理64位数据，其每条指令固定长�
 
 
 
-![ok](/Users/yehuangbin/Library/Application Support/typora-user-images/image-20200310104457903.png)
-
-
+![实现objc_msgSend的耗时监控](../images/实现objc_msgSend的耗时监控.jpg)
 
 由于存在多层级 objc_msgSend 调用，所以需要涉及一个调用栈来保存调用层级和起始时间。调用before_objc_msgSend时，都将最新的调用指令进行入栈操作，记录当前时间和调用层级，调用after_objc_msgSend时取出栈顶元素，即可得到方法及对应的耗时。
 
