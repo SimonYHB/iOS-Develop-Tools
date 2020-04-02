@@ -14,12 +14,14 @@
 
 @implementation AppDelegate
 
-
+extern CFAbsoluteTime startTime;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     setMaxDepth(100);
     setMinConsumeTime(10);
     startMonitor();
+    double launchTime = (CFAbsoluteTimeGetCurrent() - startTime);
+    NSLog(@"%.5f",launchTime);
     return YES;
 }
 

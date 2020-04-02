@@ -22,7 +22,8 @@ YEThreadCallRecord *getThreadCallRecord(int *count){
 }
 void setMaxDepth(int depth) {};
 void setMinConsumeTime(uint64_t time) {};
-bool callTraceEnable() { return false };
+bool callTraceEnable() { return false; };
+void clearCallRecords(void) {};
 #else
 //用于记录方法
 typedef struct {
