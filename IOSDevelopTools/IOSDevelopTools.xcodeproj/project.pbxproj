@@ -30,6 +30,7 @@
 		B40C68062418C94600643913 /* YECallRecordModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B40C68052418C94600643913 /* YECallRecordModel.m */; };
 		B40C68092418CA0100643913 /* YECallRecordLevelModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B40C68082418CA0100643913 /* YECallRecordLevelModel.m */; };
 		B40C680C2418CA8F00643913 /* YECallRecordCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B40C680B2418CA8F00643913 /* YECallRecordCell.m */; };
+		B4F17AD7243DC0280041471E /* YECallMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F17AD6243DC0280041471E /* YECallMonitor.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +92,8 @@
 		B40C68082418CA0100643913 /* YECallRecordLevelModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YECallRecordLevelModel.m; sourceTree = "<group>"; };
 		B40C680A2418CA8F00643913 /* YECallRecordCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YECallRecordCell.h; sourceTree = "<group>"; };
 		B40C680B2418CA8F00643913 /* YECallRecordCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YECallRecordCell.m; sourceTree = "<group>"; };
+		B4F17AD5243DC0280041471E /* YECallMonitor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YECallMonitor.h; sourceTree = "<group>"; };
+		B4F17AD6243DC0280041471E /* YECallMonitor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YECallMonitor.m; sourceTree = "<group>"; };
 		B5A0C0632374135994FB5211 /* Pods-IOSDevelopTools-IOSDevelopToolsUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IOSDevelopTools-IOSDevelopToolsUITests.release.xcconfig"; path = "Target Support Files/Pods-IOSDevelopTools-IOSDevelopToolsUITests/Pods-IOSDevelopTools-IOSDevelopToolsUITests.release.xcconfig"; sourceTree = "<group>"; };
 		E56D345BE3903A017E5277A4 /* Pods-IOSDevelopTools.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IOSDevelopTools.release.xcconfig"; path = "Target Support Files/Pods-IOSDevelopTools/Pods-IOSDevelopTools.release.xcconfig"; sourceTree = "<group>"; };
 		E7B85F70C831A18020C9B7A0 /* Pods_IOSDevelopToolsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IOSDevelopToolsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -220,6 +223,8 @@
 				B40C68082418CA0100643913 /* YECallRecordLevelModel.m */,
 				B40C680A2418CA8F00643913 /* YECallRecordCell.h */,
 				B40C680B2418CA8F00643913 /* YECallRecordCell.m */,
+				B4F17AD5243DC0280041471E /* YECallMonitor.h */,
+				B4F17AD6243DC0280041471E /* YECallMonitor.m */,
 			);
 			path = OCTimeConsumeMonitor;
 			sourceTree = "<group>";
@@ -454,6 +459,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B4F17AD7243DC0280041471E /* YECallMonitor.m in Sources */,
 				B40C680C2418CA8F00643913 /* YECallRecordCell.m in Sources */,
 				B40C68062418C94600643913 /* YECallRecordModel.m in Sources */,
 				B40C67EB241779AD00643913 /* YECallTraceCore.c in Sources */,

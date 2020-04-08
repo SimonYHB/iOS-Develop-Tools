@@ -13,6 +13,7 @@
 #import "YECallRecordModel.h"
 #import "YECallRecordLevelModel.h"
 #import <objc/runtime.h>
+#import "YECallMonitor.h"
 
 typedef NS_ENUM(NSInteger, TPTableType) {
     tableTypeSequential,
@@ -151,53 +152,17 @@ static CGFloat TPHeaderHight = 100;
 - (void)stopAndGetCallRecord
 {
     stopMonitor();
-    int count = 0;
-    YEThreadCallRecord *mainThreadCallRecord = getThreadCallRecord(&count);
-    if (mainThreadCallRecord==NULL) {
-        NSLog(@"=====================================");
-        NSLog(@"没有捕抓到符号耗时要求的方法");
-        NSLog(@"=====================================");
-        return;
-    }
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSMutableString *textM = [[NSMutableString alloc] init];
-        NSMutableArray *allMethodRecord = [NSMutableArray array];
-        
-        
-        int i = 0, j;
-        while (i < count) {
-            NSMutableArray *methodRecord = [NSMutableArray array];
-            for (j = i; j <= count;j++)
-            {
-                YEThreadCallRecord *callRecord = &mainThreadCallRecord[j];
-                NSString *str = [self debug_getMethodCallStr:callRecord];
-                [textM appendString:str];
-                [textM appendString:@"\r"];
-                [self setRecordDic:methodRecord record:callRecord];
-                if (callRecord->depth==0 || j==count-1)
-                {
-                    NSArray *recordModelArr = [self recursive_getRecord:methodRecord];
-                    YECallRecordLevelModel *model = [[YECallRecordLevelModel alloc] initWithRecordModelArr:recordModelArr];
-                    [allMethodRecord addObject:model];
-                    //退出循环
-                    break;
-                }
-            }
-            
-            i = j+1;
-        }
-        
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.sequentialMethodRecord = [[NSArray alloc] initWithArray:allMethodRecord copyItems:YES];
-            self.tpTableType = tableTypeSequential;
-            self.RecordBtn.hidden = NO;
-            [self clickRecordBtn];
-        });
-        [self sortCostTimeRecord:[[NSArray alloc] initWithArray:allMethodRecord copyItems:YES]];
-        [self sortCallCountRecord:[[NSArray alloc] initWithArray:allMethodRecord copyItems:YES]];
-        [self debug_printMethodRecord:textM];
+    NSArray *allMethodRecord = [[YECallMonitor shareInstance] getThreadCallRecord];
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.sequentialMethodRecord = [[NSArray alloc] initWithArray:allMethodRecord copyItems:YES];
+        self.tpTableType = tableTypeSequential;
+        self.RecordBtn.hidden = NO;
+        [self clickRecordBtn];
     });
+    [self sortCostTimeRecord:[[NSArray alloc] initWithArray:allMethodRecord copyItems:YES]];
+    [self sortCallCountRecord:[[NSArray alloc] initWithArray:allMethodRecord copyItems:YES]];
+    
 }
 
 - (void)debug_printMethodRecord:(NSString *)text

@@ -7,19 +7,30 @@
 //
 
 #import "AppDelegate.h"
-#import "YECallTraceCore.h"
+#import "YECallMonitor.h"
+#import "mach-o/dyld.h"
 @interface AppDelegate ()
 
 @end
 
 @implementation AppDelegate
-
+//static void add(const struct mach_header* header, intptr_t imp) {
+//    usleep(10000);
+//}
 extern CFAbsoluteTime startTime;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    setMaxDepth(100);
-    setMinConsumeTime(10);
-    startMonitor();
+
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//            _dyld_register_func_for_add_image(add);
+//            usleep(3000000);
+//        });
+        
+    YECallMonitor *monitor = [YECallMonitor shareInstance];
+    [monitor setMinTime:10];
+    [monitor start];
+    [monitor setFilterClassNames:@[@"ViewController"]];
+
     double launchTime = (CFAbsoluteTimeGetCurrent() - startTime);
     NSLog(@"%.5f",launchTime);
     return YES;

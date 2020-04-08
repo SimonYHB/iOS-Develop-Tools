@@ -7,13 +7,14 @@
 //
 
 #import "UIWindow+YECallTraceShake.h"
-#import "YECallTraceCore.h"
+#import "YECallMonitor.h"
 #import "YECallTraceShowViewController.h"
 @implementation UIWindow (YECallTraceShake)
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event
 {
-    if (callTraceEnable()){
-        if (getThreadCallRecord(NULL)) {
+    YECallMonitor *monitor = [YECallMonitor shareInstance];
+    if ([monitor enable]){
+        if ([monitor getThreadCallRecord]) {
             YECallTraceShowViewController *vc = [[YECallTraceShowViewController alloc] init];
             vc.modalPresentationStyle = UIModalPresentationFullScreen;
             [self.rootViewController presentViewController:vc animated:YES completion:nil];
