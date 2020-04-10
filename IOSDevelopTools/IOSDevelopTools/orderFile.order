@@ -1,0 +1,22 @@
+_getThreadMethodStack
+_after_objc_msgSend
+_before_objc_msgSend
+-[YECallMonitor ignoreClassArr]
+-[YECallMonitor setFilterClassNames:]
+_get_protection
+_perform_rebinding_with_section
+_rebind_symbols_for_image
+__rebind_symbols_for_image
+_prepend_rebindings
+_rebind_symbols
+___startMonitor_block_invoke
+_startMonitor
+-[YECallMonitor start]
+_setMinConsumeTime
+-[YECallMonitor setMinTime:]
+___30+[YECallMonitor shareInstance]_block_invoke
++[YECallMonitor shareInstance]
+-[AppDelegate application:didFinishLaunchingWithOptions:]
+-[AppDelegate setWindow:]
+-[AppDelegate window]
+_main
