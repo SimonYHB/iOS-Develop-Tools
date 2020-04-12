@@ -247,7 +247,17 @@ total images using weak symbols:  97
 - 做好网络请求接口优化（DNS 策略等），只请求与首屏相关数据。
 - 本地缓存首屏数据，待渲染完成后再去请求新数据。
 
-### 全方面方案
+
+
+### 其它优化
+
+#### 二进制重排
+
+去年年底二进制重排的概念被宇宙厂带火了起来，个人觉得噱头大于效果，详细内容可参考笔者的文章 [iOS启动优化之二进制重排](https://juejin.im/post/5e92bd826fb9a03c585c003f) 
+
+
+
+## 总结
 
 启动优化不应该是一次性的，最好的方案也不是在出现才去解决，而应该包括：
 
@@ -257,7 +267,7 @@ total images using weak symbols:  97
 
 
 
-## 用到的工具
+### 部分工具
 
 - Xcode自带工具 Time Profiler 和 System Trace
 
@@ -281,7 +291,7 @@ total images using weak symbols:  97
 
   
 
-## 参考资料
+参考资料
 
 - [如何实现 iOS App 的冷启动优化](https://mp.weixin.qq.com/s/CIkpPlTrpMEV9lRTwcABrA)  
 

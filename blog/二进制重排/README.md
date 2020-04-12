@@ -1,26 +1,8 @@
 # 二进制重排
 
-http://yulingtianxia.com/blog/2019/09/01/App-Order-Files/
-
-https://mp.weixin.qq.com/s/YDO0ALPQWujuLvuRWdX7dQ
-
-https://mp.weixin.qq.com/s?__biz=MzI1MzYzMjE0MQ==&mid=2247485101&idx=1&sn=abbbb6da1aba37a04047fc210363bcc9&scene=21#wechat_redirect
-
-https://juejin.im/post/5e1280fae51d4540e47ca450
-
-https://juejin.im/post/5e701ed5e51d4526e91f6916#heading-7
-
-https://blog.csdn.net/shengdaVolleyball/article/details/104984267
-
-
-
-
-
-
-
 ## 介绍
 
-去年二进制重排的概念突然火了起来，综合网上已有资料并总结实现了下，以便对启动优化有更好的了解。
+去年年底二进制重排的概念被宇宙厂带火了起来，出于学习的目的，综合网上已有资料并总结实现了下，以便对启动优化有更好的了解。
 
 ### App启动和内存加载
 
@@ -352,7 +334,7 @@ _main
 
 ## 总结
 
-网上还有其他方案来实现二进制重排，抖音通过手动插桩获取的符号数据会更加准确，但就其复杂度来说感觉性价比不高，而手淘的方案比较特殊，通过修改 .o 目标文件实现静态插桩，需要对目标代码较为熟悉，通用性不高。  
+网上还有其他方案来实现二进制重排，抖音通过手动插桩获取的符号数据（包括C++静态初始化、+Load、Block等）会更加准确，但就其复杂度来说感觉性价比不高，而手淘的方案比较特殊，通过修改 .o 目标文件实现静态插桩，需要对目标代码较为熟悉，通用性不高。  
 
 由于在 iOS 上，一页有16KB（Mac 为4KB），可以存放大量代码，所以在启动阶段执行 `page fault` 的次数并不会很多，二进制重排相比于其他优化手段，提升效果不明显，应优先从其他方面去进行启动优化（关于这部分的文章近期就会发布），最后再考虑是否做重排优化，但从技术学习的层面还是值得研究的 😁。
 
