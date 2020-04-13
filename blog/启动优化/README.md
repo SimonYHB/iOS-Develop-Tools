@@ -1,18 +1,6 @@
-## App启动优化
+# App的启动优化
 
-https://time.geekbang.org/column/article/85331
-https://juejin.im/post/5cff0ada6fb9a07edc0b4c3c?utm_source=gold_browser_extension
-https://juejin.im/post/5db654fc5188257d606aaf2a?utm_source=gold_browser_extension
-https://techblog.toutiao.com/2017/01/17/iosspeed/#more
-https://mp.weixin.qq.com/s/jN3jaNrvXczZoYIRCWZs7w
-
-http://yulingtianxia.com/blog/2016/10/30/Optimizing-App-Startup-Time/
-
-
-
-##  App的启动耗时
-
-### 介绍
+## 介绍
 
 App 的启动时间是体现其性能优劣的一个重要指标，启动时间越快用户的等待时间就越短，提升用户体验感，大厂应用甚至会做到“ 毫秒必究 ”。  
 
@@ -25,13 +13,13 @@ App 的启动时间是体现其性能优劣的一个重要指标，启动时间�
 
 本篇文章主要针对冷启动方式进行优化分析，介绍常用的检测工具及优化方法。
 
-### 冷启动流程
+## 冷启动流程
 
 Apple 官方的[《WWDC Optimizing App Startup Time》](https://developer.apple.com/videos/play/wwdc2016/406) 将 iOS 应用的启动可分为 pre-main 阶段和 main 两个阶段，最佳的启动速度是400ms以内，最慢不得大于20s，否则会被系统进程杀死（最低配置设备）。
 
 为了更好的区分，笔者将整个启动流程分为三个阶段， **App总启动流程 = pre-main + main函数代理（didFinishLaunchingWithOptions）+ 首屏渲染（viewDidAppear）**，后两个阶段都属于 `main函数`  执行阶段。
 
-#### pre-main 执行内容
+### pre-main 执行内容
 
 此时对应的 App 页面是闪屏页的展示。
 
@@ -63,11 +51,11 @@ Apple 官方的[《WWDC Optimizing App Startup Time》](https://developer.apple.
 
   往应用的堆栈中写入内容，包括执行 `+load` 方法、调用 `C/C++` 中的构造器函数（用 `attribute((constructor))` 修饰的函数）、创建非基本类型的 `C++` 静态全局变量等。
 
-#### main函数代理执行内容
+### main函数代理执行内容
 
 从 `main()` 函数开始执行到 `didFinishLaunchingWithOptions` 方法执行结束的耗时。通常会在这个过程中进行各种工具（监控工具、推送、定位等）初始化、权限申请、判断版本、全局配置等。
 
-#### 首屏渲染执行内容
+### 首屏渲染执行内容
 
 首屏 `UI` 构建阶段，需要 `CPU` 计算布局并由 `GPU` 完成渲染，如果数据来源于网络，还需进行网络请求。
 
@@ -253,7 +241,7 @@ total images using weak symbols:  97
 
 #### 二进制重排
 
-去年年底二进制重排的概念被宇宙厂带火了起来，个人觉得噱头大于效果，详细内容可参考笔者的文章 [iOS启动优化之二进制重排](https://juejin.im/post/5e92bd826fb9a03c585c003f) 
+去年年底二进制重排的概念被宇宙厂带火了起来，个人觉得噱头大于效果，详细内容可参考笔者的文章 [iOS启动优化之二进制重排](https://juejin.im/post/5e92bd826fb9a03c585c003f) 。
 
 
 
@@ -264,6 +252,8 @@ total images using weak symbols:  97
 - 解决现存的问题
 - 后续开发的管控
 - 完整的监控体系
+
+只有在开发的前中后同时介入，才能保证 App 的出品质量，毕竟开发是前人挖坑给后人填坑的过程 😂。
 
 
 
@@ -281,17 +271,9 @@ total images using weak symbols:  97
 
 - TinyPNG 压缩图片，减少 IO 操作量
 
-- use framework?
-
-  https://mp.weixin.qq.com/s/wTF3JSFH5b2zIUYAbnC-Bw
-
   
 
-  
-
-  
-
-参考资料
+### 参考资料
 
 - [如何实现 iOS App 的冷启动优化](https://mp.weixin.qq.com/s/CIkpPlTrpMEV9lRTwcABrA)  
 
@@ -315,4 +297,9 @@ total images using weak symbols:  97
 
   
 
-  
+### About Me  🐝
+
+今年计划完成10个优秀第三方源码解读，会陆续提交到 [iOS-Framework-Analysis](https://github.com/SimonYHB/iOS-Framework-Analysis) ，欢迎 star 项目陪伴笔者一起提高进步，若有什么不足之处，敬请告知 🏆。
+
+
+
