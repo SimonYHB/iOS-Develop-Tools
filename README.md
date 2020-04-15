@@ -9,9 +9,11 @@
 
   通过Hook objc_msgSend的方式，实现对所有OC方法的前后插桩统计耗时，具体可看作者之前的文章 [通过objc_msgSend实现iOS方法耗时监控](https://juejin.im/post/5e678c526fb9a07c994bf1d8)
 
+- [二进制重排收集工具](/iOSDevelopTools/AppCallCollecter)
 
+  链接器提供了一个 `Order File` 配置，可让我们按自己的需要设置 App 启动时链接库的顺序，对启动优化做到“毫秒必究”。原理及使用参见 [iOS启动优化之二进制重排](https://juejin.im/post/5e92bd826fb9a03c585c003f)。
 
-
+  
 
 ## 版权声明
 
