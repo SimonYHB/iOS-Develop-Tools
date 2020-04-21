@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 #import "YECallMonitor.h"
 #import "mach-o/dyld.h"
-//#import "AppCallCollecter.h"
+#import "AppCallCollecter.h"
 @interface AppDelegate ()
 
 @end
@@ -26,8 +26,9 @@ extern CFAbsoluteTime startTime;
 //            _dyld_register_func_for_add_image(add);
 //            usleep(3000000);
 //        });
-
-
+    
+  
+    
     YECallMonitor *monitor = [YECallMonitor shareInstance];
     [monitor setMinTime:10];
     [monitor start];
@@ -35,9 +36,13 @@ extern CFAbsoluteTime startTime;
 
     double launchTime = (CFAbsoluteTimeGetCurrent() - startTime);
     NSLog(@"%.5f",launchTime);
+    
 //    appOrderFile(^(NSString *orderFilePath) {
 //        NSLog(@"%@",orderFilePath);
 //    });
+    
+    NSArray *arr = getAppCalls();
+    NSLog(@"%@",[arr description]);
 
     return YES;
 }
