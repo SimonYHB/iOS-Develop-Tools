@@ -34,6 +34,9 @@
 		B40D18C524405871006D29FE /* AppCallCollecter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B40D18BE24405871006D29FE /* AppCallCollecter.framework */; };
 		B40D18C624405871006D29FE /* AppCallCollecter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B40D18BE24405871006D29FE /* AppCallCollecter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B40D18CC244058AA006D29FE /* AppCallCollecter.m in Sources */ = {isa = PBXBuildFile; fileRef = B40D18CB244058AA006D29FE /* AppCallCollecter.m */; };
+		B4182D202456C1F50032229C /* YEDNSEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = B4182D1F2456C1F50032229C /* YEDNSEntity.m */; };
+		B4182D242456CE530032229C /* NSString+YEUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = B4182D232456CE530032229C /* NSString+YEUtil.m */; };
+		B4182D272456D2DB0032229C /* YESessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B4182D262456D2DB0032229C /* YESessionManager.m */; };
 		B44D2DE424552BF7006BC247 /* YENetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B44D2DE324552BF7006BC247 /* YENetworkManager.m */; };
 		B4F17AD7243DC0280041471E /* YECallMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F17AD6243DC0280041471E /* YECallMonitor.m */; };
 /* End PBXBuildFile section */
@@ -122,6 +125,12 @@
 		B40D18C024405871006D29FE /* AppCallCollecter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppCallCollecter.h; sourceTree = "<group>"; };
 		B40D18C124405871006D29FE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B40D18CB244058AA006D29FE /* AppCallCollecter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppCallCollecter.m; sourceTree = "<group>"; };
+		B4182D1E2456C1F50032229C /* YEDNSEntity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YEDNSEntity.h; sourceTree = "<group>"; };
+		B4182D1F2456C1F50032229C /* YEDNSEntity.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YEDNSEntity.m; sourceTree = "<group>"; };
+		B4182D222456CE530032229C /* NSString+YEUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+YEUtil.h"; sourceTree = "<group>"; };
+		B4182D232456CE530032229C /* NSString+YEUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+YEUtil.m"; sourceTree = "<group>"; };
+		B4182D252456D2DB0032229C /* YESessionManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YESessionManager.h; sourceTree = "<group>"; };
+		B4182D262456D2DB0032229C /* YESessionManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YESessionManager.m; sourceTree = "<group>"; };
 		B44D2DE224552BF7006BC247 /* YENetworkManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YENetworkManager.h; sourceTree = "<group>"; };
 		B44D2DE324552BF7006BC247 /* YENetworkManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YENetworkManager.m; sourceTree = "<group>"; };
 		B4F17AD5243DC0280041471E /* YECallMonitor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YECallMonitor.h; sourceTree = "<group>"; };
@@ -217,6 +226,7 @@
 		B40C67B52417713800643913 /* IOSDevelopTools */ = {
 			isa = PBXGroup;
 			children = (
+				B4182D212456CE320032229C /* Category */,
 				B44D2DDE24552AA6006BC247 /* Network */,
 				B40C67EC24177A4B00643913 /* Third */,
 				B40C67E82417725700643913 /* OCTimeConsumeMonitor */,
@@ -304,11 +314,24 @@
 			path = AppCallCollecter;
 			sourceTree = "<group>";
 		};
+		B4182D212456CE320032229C /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				B4182D222456CE530032229C /* NSString+YEUtil.h */,
+				B4182D232456CE530032229C /* NSString+YEUtil.m */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
 		B44D2DDE24552AA6006BC247 /* Network */ = {
 			isa = PBXGroup;
 			children = (
 				B44D2DE224552BF7006BC247 /* YENetworkManager.h */,
 				B44D2DE324552BF7006BC247 /* YENetworkManager.m */,
+				B4182D1E2456C1F50032229C /* YEDNSEntity.h */,
+				B4182D1F2456C1F50032229C /* YEDNSEntity.m */,
+				B4182D252456D2DB0032229C /* YESessionManager.h */,
+				B4182D262456D2DB0032229C /* YESessionManager.m */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -570,11 +593,14 @@
 				B44D2DE424552BF7006BC247 /* YENetworkManager.m in Sources */,
 				B40C67F724177A4B00643913 /* fishhook.c in Sources */,
 				B40C67BB2417713800643913 /* ViewController.m in Sources */,
+				B4182D202456C1F50032229C /* YEDNSEntity.m in Sources */,
 				B40C68092418CA0100643913 /* YECallRecordLevelModel.m in Sources */,
 				B40C68032418C80900643913 /* YECallTraceShowViewController.m in Sources */,
 				B40C67C62417713900643913 /* main.m in Sources */,
 				B40C68002418C70100643913 /* UIWindow+YECallTraceShake.m in Sources */,
 				B40C67B82417713800643913 /* AppDelegate.m in Sources */,
+				B4182D242456CE530032229C /* NSString+YEUtil.m in Sources */,
+				B4182D272456D2DB0032229C /* YESessionManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

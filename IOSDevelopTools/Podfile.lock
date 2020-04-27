@@ -19,20 +19,24 @@ PODS:
   - FMDB/common (2.5)
   - FMDB/standard (2.5):
     - FMDB/common
+  - YYModel (1.0.4)
 
 DEPENDENCIES:
   - AFNetworking (= 3.2.1)
   - FMDB (= 2.5)
+  - YYModel
 
 SPEC REPOS:
   trunk:
     - AFNetworking
     - FMDB
+    - YYModel
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   FMDB: 96e8f1bcc1329e269330f99770ad4285d9003e52
+  YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: e6b5a6ff05d4e8b44c95d930af64b90e0a15ef9b
+PODFILE CHECKSUM: d9b1decbec5b3832b0ab94c1279a64bf932c28aa
 
 COCOAPODS: 1.8.4
