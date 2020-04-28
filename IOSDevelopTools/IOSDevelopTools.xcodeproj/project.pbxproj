@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		08B265757A083FC81982B262 /* libPods-IOSDevelopToolsTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4EFC32731AA3F0F1199D6CF /* libPods-IOSDevelopToolsTests.a */; };
+		18300D5F2457107800AEDFF8 /* YESessionTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 18300D5E2457107800AEDFF8 /* YESessionTool.m */; };
 		252A41F1127AA140F9CF8EF5 /* libPods-IOSDevelopTools.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1112649CC6AFB3BE08BD93E9 /* libPods-IOSDevelopTools.a */; };
 		8147CF8B6F5F67EDB0E0C517 /* libPods-IOSDevelopTools-IOSDevelopToolsUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C6C3013AE4247015A370CE4 /* libPods-IOSDevelopTools-IOSDevelopToolsUITests.a */; };
 		B40C67B82417713800643913 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B40C67B72417713800643913 /* AppDelegate.m */; };
@@ -82,6 +83,8 @@
 /* Begin PBXFileReference section */
 		1112649CC6AFB3BE08BD93E9 /* libPods-IOSDevelopTools.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-IOSDevelopTools.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		15D7B9BDDD80CB9B25F0D76E /* Pods-IOSDevelopToolsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IOSDevelopToolsTests.debug.xcconfig"; path = "Target Support Files/Pods-IOSDevelopToolsTests/Pods-IOSDevelopToolsTests.debug.xcconfig"; sourceTree = "<group>"; };
+		18300D5D2457107800AEDFF8 /* YESessionTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YESessionTool.h; sourceTree = "<group>"; };
+		18300D5E2457107800AEDFF8 /* YESessionTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YESessionTool.m; sourceTree = "<group>"; };
 		3C6C3013AE4247015A370CE4 /* libPods-IOSDevelopTools-IOSDevelopToolsUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-IOSDevelopTools-IOSDevelopToolsUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4379839A44E8537ABFEE58BA /* Pods-IOSDevelopTools-IOSDevelopToolsUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IOSDevelopTools-IOSDevelopToolsUITests.debug.xcconfig"; path = "Target Support Files/Pods-IOSDevelopTools-IOSDevelopToolsUITests/Pods-IOSDevelopTools-IOSDevelopToolsUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		43BB94FFB6C49B2E2029400C /* Pods-IOSDevelopToolsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IOSDevelopToolsTests.release.xcconfig"; path = "Target Support Files/Pods-IOSDevelopToolsTests/Pods-IOSDevelopToolsTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -332,6 +335,8 @@
 				B4182D1F2456C1F50032229C /* YEDNSEntity.m */,
 				B4182D252456D2DB0032229C /* YESessionManager.h */,
 				B4182D262456D2DB0032229C /* YESessionManager.m */,
+				18300D5D2457107800AEDFF8 /* YESessionTool.h */,
+				18300D5E2457107800AEDFF8 /* YESessionTool.m */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -359,6 +364,7 @@
 				B40C67B02417713800643913 /* Frameworks */,
 				B40C67B12417713800643913 /* Resources */,
 				B40D18CA24405871006D29FE /* Embed Frameworks */,
+				18300D602457208600AEDFF8 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -535,6 +541,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		18300D602457208600AEDFF8 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "KEYWORDS=\"TODO:|FIXME:|DevTeam:|XXX:\"find \"${SRCROOT}\" \\( -name \"*.h\" -or -name \"*.m\" \\) -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($KEYWORDS).*\\$\" | perl -p -e \"s/($KEYWORDS)/ warning: \\$1/\"\n";
+		};
 		56EAF4C3120732A91CAC5259 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -596,6 +619,7 @@
 				B4182D202456C1F50032229C /* YEDNSEntity.m in Sources */,
 				B40C68092418CA0100643913 /* YECallRecordLevelModel.m in Sources */,
 				B40C68032418C80900643913 /* YECallTraceShowViewController.m in Sources */,
+				18300D5F2457107800AEDFF8 /* YESessionTool.m in Sources */,
 				B40C67C62417713900643913 /* main.m in Sources */,
 				B40C68002418C70100643913 /* UIWindow+YECallTraceShake.m in Sources */,
 				B40C67B82417713800643913 /* AppDelegate.m in Sources */,

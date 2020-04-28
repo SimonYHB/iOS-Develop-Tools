@@ -11,6 +11,7 @@
 #import "YEDNSEntity.h"
 #import <arpa/inet.h>
 #import "NSString+YEUtil.h"
+#import "YESessionTool.h"
 @interface YENetworkManager()
 
 //CDNS数据请求使用的IP和Domain列表
@@ -86,10 +87,31 @@
     NSURLRequest *ipRequest = [self transfromHTTPDNSRequest:originalRequest];
     
     // SessionManager
+    [[YESessionTool shareInstance] getSessionManagerWithRequest:ipRequest callBack:^(YESessionManager * _Nonnull sessionManager) {
+        [sessionManager dataTaskWithRequest:ipRequest uploadProgress:^(NSProgress * _Nonnull uploadProgress) {
+            //不处理
+        } downloadProgress:^(NSProgress * _Nonnull downloadProgress) {
+            //不处理
+        } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+            if (callBack) {
+                if (error) {
+                    NSDictionary *errorDic = [NSDictionary dictionaryWithObject:error.description forKey:@"message"];
+                    callBack(@{}, errorDic);
+                    //TODO: 失败埋点
+                    //TODO: 降级请求
+                    return;
+                }
+                //TODO: 成功埋点
+                // 数据解析
+
+            }
+        }];
+    }];
     
 }
 
 #pragma mark - Private
+
 
 
 // HTTPDNS转换
@@ -196,14 +218,6 @@
 }
 
 
-- (AFHTTPSessionManager *)getHttpSessionManager:(NSDictionary *)configuration {
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/html", @"text/json", @"text/javascript",@"text/plain", nil];
-    // 设置configuration
-    return manager;
-}
 
 
 
