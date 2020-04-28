@@ -23,6 +23,11 @@ typedef void(^YENetworkManagerResponseCallBack)(NSDictionary *response, NSDictio
 + (nonnull instancetype)shareInstance;
 
 /**
+ 获取服务器的DNS数据
+ */
+- (void)requestRemoteDNSList;
+
+/**
  *  网络请求
  *  @param url             请求地址
  *  @param paraDic         请求入参 {key: value}
@@ -37,6 +42,10 @@ typedef void(^YENetworkManagerResponseCallBack)(NSDictionary *response, NSDictio
                timeOut:(NSTimeInterval)timeoutInterval
                headers:(NSDictionary *)headersDic
               callBack:(YENetworkManagerResponseCallBack)callBack;
+
+
+
+
 
 @end
 

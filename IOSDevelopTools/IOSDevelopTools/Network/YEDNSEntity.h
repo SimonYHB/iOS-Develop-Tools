@@ -15,8 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *domain;       //原始域名
 //@property (nonatomic, strong) NSString *cdn;          //是否是CDN域名
 //@property (nonatomic, strong) NSString *sourceDomain; //收敛域名，CDN使用
-//@property (nonatomic, strong) NSString *ips;          //IP列表，在这里它是一个JSON数组字符串
-@property (nonatomic, strong) NSMutableArray *ipArray;//IP数组
+@property (nonatomic, strong) NSMutableArray *ips;          //IP列表
+
 @end
 
 NS_ASSUME_NONNULL_END

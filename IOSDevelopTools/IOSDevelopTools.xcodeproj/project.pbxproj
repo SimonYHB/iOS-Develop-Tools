@@ -38,6 +38,8 @@
 		B4182D202456C1F50032229C /* YEDNSEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = B4182D1F2456C1F50032229C /* YEDNSEntity.m */; };
 		B4182D242456CE530032229C /* NSString+YEUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = B4182D232456CE530032229C /* NSString+YEUtil.m */; };
 		B4182D272456D2DB0032229C /* YESessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B4182D262456D2DB0032229C /* YESessionManager.m */; };
+		B4182D332457CD180032229C /* NSData+YEUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = B4182D322457CD180032229C /* NSData+YEUtil.m */; };
+		B4182D382457D2EB0032229C /* dns.json in Resources */ = {isa = PBXBuildFile; fileRef = B4182D372457D2EB0032229C /* dns.json */; };
 		B44D2DE424552BF7006BC247 /* YENetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B44D2DE324552BF7006BC247 /* YENetworkManager.m */; };
 		B4F17AD7243DC0280041471E /* YECallMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F17AD6243DC0280041471E /* YECallMonitor.m */; };
 /* End PBXBuildFile section */
@@ -134,6 +136,9 @@
 		B4182D232456CE530032229C /* NSString+YEUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+YEUtil.m"; sourceTree = "<group>"; };
 		B4182D252456D2DB0032229C /* YESessionManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YESessionManager.h; sourceTree = "<group>"; };
 		B4182D262456D2DB0032229C /* YESessionManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YESessionManager.m; sourceTree = "<group>"; };
+		B4182D312457CD180032229C /* NSData+YEUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSData+YEUtil.h"; sourceTree = "<group>"; };
+		B4182D322457CD180032229C /* NSData+YEUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSData+YEUtil.m"; sourceTree = "<group>"; };
+		B4182D372457D2EB0032229C /* dns.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = dns.json; sourceTree = "<group>"; };
 		B44D2DE224552BF7006BC247 /* YENetworkManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YENetworkManager.h; sourceTree = "<group>"; };
 		B44D2DE324552BF7006BC247 /* YENetworkManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YENetworkManager.m; sourceTree = "<group>"; };
 		B4F17AD5243DC0280041471E /* YECallMonitor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YECallMonitor.h; sourceTree = "<group>"; };
@@ -229,6 +234,7 @@
 		B40C67B52417713800643913 /* IOSDevelopTools */ = {
 			isa = PBXGroup;
 			children = (
+				B4182D342457D0A30032229C /* Resource */,
 				B4182D212456CE320032229C /* Category */,
 				B44D2DDE24552AA6006BC247 /* Network */,
 				B40C67EC24177A4B00643913 /* Third */,
@@ -322,8 +328,18 @@
 			children = (
 				B4182D222456CE530032229C /* NSString+YEUtil.h */,
 				B4182D232456CE530032229C /* NSString+YEUtil.m */,
+				B4182D312457CD180032229C /* NSData+YEUtil.h */,
+				B4182D322457CD180032229C /* NSData+YEUtil.m */,
 			);
 			path = Category;
+			sourceTree = "<group>";
+		};
+		B4182D342457D0A30032229C /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				B4182D372457D2EB0032229C /* dns.json */,
+			);
+			path = Resource;
 			sourceTree = "<group>";
 		};
 		B44D2DDE24552AA6006BC247 /* Network */ = {
@@ -486,6 +502,7 @@
 			files = (
 				B40C67F824177A4B00643913 /* README.md in Resources */,
 				B40C67C32417713900643913 /* LaunchScreen.storyboard in Resources */,
+				B4182D382457D2EB0032229C /* dns.json in Resources */,
 				B40C67C02417713900643913 /* Assets.xcassets in Resources */,
 				B40C67BE2417713800643913 /* Main.storyboard in Resources */,
 				B40C67F924177A4B00643913 /* CONTRIBUTING.md in Resources */,
@@ -609,6 +626,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B4182D332457CD180032229C /* NSData+YEUtil.m in Sources */,
 				B4F17AD7243DC0280041471E /* YECallMonitor.m in Sources */,
 				B40C680C2418CA8F00643913 /* YECallRecordCell.m in Sources */,
 				B40C68062418C94600643913 /* YECallRecordModel.m in Sources */,
@@ -945,6 +963,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yhb.AppCallCollecter;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -972,6 +991,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yhb.AppCallCollecter;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;

@@ -11,7 +11,10 @@
 #import "YEDNSEntity.h"
 #import <arpa/inet.h>
 #import "NSString+YEUtil.h"
+#import "NSData+YEUtil.h"
 #import "YESessionTool.h"
+#import "NSObject+YYModel.h"
+
 @interface YENetworkManager()
 
 //CDNS数据请求使用的IP和Domain列表
@@ -38,6 +41,22 @@
     }
     
     return instance;
+}
+
+- (void)requestRemoteDNSList  {
+    // 具体的实现根据服务端要求
+    NSError*error = nil;
+    NSData *data = [[NSData alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"dns.json" ofType:nil]];
+    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
+    NSArray *domainlist = dic[@"domainlist"];
+    NSMutableArray *tempDNSEntityArray = [[NSMutableArray alloc] initWithCapacity:0];
+    for (NSDictionary *domainDict in domainlist)
+    {
+        //创建实体并保存
+        YEDNSEntity *cdnsEntity = [YEDNSEntity yy_modelWithDictionary:domainDict];
+        [tempDNSEntityArray addObject:cdnsEntity];
+    }
+    self.dnsEntityListCache = tempDNSEntityArray;
 }
 
 
@@ -95,14 +114,37 @@
         } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
             if (callBack) {
                 if (error) {
-                    NSDictionary *errorDic = [NSDictionary dictionaryWithObject:error.description forKey:@"message"];
-                    callBack(@{}, errorDic);
-                    //TODO: 失败埋点
-                    //TODO: 降级请求
-                    return;
+                    
+                    //TODO: 失败埋点上传
+                    // 降级请求
+                    if ([self canDegradeForRequest:ipRequest.URL error:error]) {
+                        // 移除该IP
+                        [self removeIpInCacheWithDomain:originalRequest.URL.host ip:ipRequest.URL.host];
+                        // 重新发起
+                        [self requestWithUrl:url body:paraDic method:method timeOut:timeoutInterval headers:headersDic callBack:callBack];
+                    } else {
+                        NSDictionary *errorDic = [NSDictionary dictionaryWithObject:error.description forKey:@"message"];
+                        callBack(@{}, errorDic);
+                    }
+                    
+                } else {
+                    //TODO: 成功埋点上传
+                    // 保存Cookie
+                    if (![self isIPAddressString:originalRequest.URL.host] && ![originalRequest.URL.host isEqualToString:ipRequest.URL.host]) {
+                        NSDictionary *responseHeaderDict = ((NSHTTPURLResponse *)response).allHeaderFields;
+                        [self storageHeaderFields:responseHeaderDict forURL:ipRequest.URL];
+                    }
+                    // 数据解析
+                    NSDictionary *responseDict = [responseObject objectFromJSONData];
+                    
+                    if (responseDict != nil && [responseDict isKindOfClass:[NSDictionary class]]) {
+                        callBack(responseDict, @{});
+                    } else {
+                        NSDictionary *errorDic = [NSDictionary dictionaryWithObject:@"数据解析错误" forKey:@"message"];
+                        callBack(@{}, errorDic);
+                    }
                 }
-                //TODO: 成功埋点
-                // 数据解析
+               
 
             }
         }];
@@ -114,6 +156,20 @@
 
 
 
+
+// 可否降级请求判断
+- (BOOL)canDegradeForRequest:(NSURL*)url error:(NSError *)error {
+    if (url == nil || error == nil)
+    {
+        return NO;
+    }
+    if (![self isIPAddressString:url.host]) {
+        return NO;
+    }
+    //TODO: error判断
+    return YES;
+}
+
 // HTTPDNS转换
 - (NSURLRequest *)transfromHTTPDNSRequest:(NSURLRequest *)request {
     if ([self supportHTTPDNS:request]) {
@@ -124,7 +180,7 @@
         // 创建ip请求
         NSMutableURLRequest *newURLRequest = request.mutableCopy;
         NSString *ipAddress = nil;
-        if (entity.ipArray && entity.ipArray.count > 0 && (ipAddress = entity.ipArray.firstObject))
+        if (entity.ips && entity.ips.count > 0 && (ipAddress = entity.ips.firstObject))
         {
             //原始host替换为IP
             NSString *originalHost = request.URL.host;
@@ -182,7 +238,7 @@
     //yhb: 考虑用hash来缓存，减少遍历操作？
     for (YEDNSEntity *entity in self.dnsEntityListCache)
     {
-        if ([entity.domain isEqualToString:originalDomain] && (entity.ipArray && entity.ipArray.count > 0)) {
+        if ([entity.domain isEqualToString:originalDomain] && (entity.ips && entity.ips.count > 0)) {
             resultEntity = entity;
             break;
         }
@@ -191,6 +247,25 @@
     //解锁
     [self.dnsEntityListCacheLock unlock];
     return resultEntity;
+}
+
+// 从缓存删除实体中的指定IP
+- (void)removeIpInCacheWithDomain:(NSString*)originalDomain ip:(NSString*)ipString {
+    //加锁
+    [self.dnsEntityListCacheLock lock];
+    
+    //循环查找，删除IP
+    for (YEDNSEntity *entity in self.dnsEntityListCache)
+    {
+        if ([entity.domain isEqualToString:originalDomain] && entity.ips && [entity.ips indexOfObject:ipString] != NSNotFound)
+        {
+            [entity.ips removeObject:ipString];
+            break;
+        }
+    }
+    
+    //解锁
+    [self.dnsEntityListCacheLock unlock];
 }
 
 

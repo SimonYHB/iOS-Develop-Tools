@@ -21,6 +21,10 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (NSString *)stringByReplacingFirstOccurrencesOfString:(NSString *)target withString:(NSString *)replacement;
 
+/**
+ 判断是否是IP
+ */
+- (BOOL)isIPAddressString;
 @end
 
 NS_ASSUME_NONNULL_END

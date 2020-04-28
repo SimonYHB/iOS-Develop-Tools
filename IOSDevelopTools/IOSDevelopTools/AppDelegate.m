@@ -10,6 +10,7 @@
 #import "YECallMonitor.h"
 #import "mach-o/dyld.h"
 #import "AppCallCollecter.h"
+#import "YENetworkManager.h"
 @interface AppDelegate ()
 
 @end
@@ -27,7 +28,7 @@ extern CFAbsoluteTime startTime;
 //            usleep(3000000);
 //        });
     
-  
+    [[YENetworkManager shareInstance] requestRemoteDNSList];
     
     YECallMonitor *monitor = [YECallMonitor shareInstance];
     [monitor setMinTime:10];

@@ -29,7 +29,7 @@
     
     //处理ips字段
     if (sourceDict[@"ips"] && [sourceDict[@"ips"] isKindOfClass:[NSArray class]]) {
-        self.ipArray = [[NSMutableArray alloc] initWithArray:sourceDict[@"ips"]];
+        self.ips = [[NSMutableArray alloc] initWithArray:sourceDict[@"ips"]];
     }
 
 }
