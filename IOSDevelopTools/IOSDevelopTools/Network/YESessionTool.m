@@ -84,7 +84,7 @@
     AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
     securityPolicy.validatesDomainName = YES;
     securityPolicy.allowInvalidCertificates = YES;
-    // 从本地获取cer证书
+    // 从本地获取cer证书，仅作参考
     NSString * cerPath = [[NSBundle mainBundle] pathForResource:CerFile ofType:@"cer"];
     NSData * cerData = [NSData dataWithContentsOfFile:cerPath];
     securityPolicy.pinnedCertificates = [NSSet setWithObject:cerData];
@@ -150,7 +150,7 @@
     AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
     securityPolicy.validatesDomainName = YES;
     securityPolicy.allowInvalidCertificates = YES;
-    // 从本地获取cer证书
+    // 从本地获取cer证书,仅作参考
     NSString * cerPath = [[NSBundle mainBundle] pathForResource:CerFile ofType:@"cer"];
     NSData * cerData = [NSData dataWithContentsOfFile:cerPath];
     securityPolicy.pinnedCertificates = [NSSet setWithObject:cerData];

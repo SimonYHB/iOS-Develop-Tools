@@ -3,6 +3,8 @@
 
 本项目是记录一些作者日常开发工具，包括耗时监控、启动优化、崩溃收集等。
 
+注意：**项目只能在真机调试**
+
 ## 目录
 
 - [全局耗时监控](/iOSDevelopTools/IOSDevelopTools/OCTimeConsumeMonitor)
