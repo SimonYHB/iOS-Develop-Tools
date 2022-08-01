@@ -84,12 +84,13 @@ static int prepend_rebindings(struct rebindings_entry **rebindings_head,
   return 0;
 }
 
-static vm_prot_t get_protection(void *sectionStart) {
+#if 0
+static int get_protection(void *addr, vm_prot_t *prot, vm_prot_t *max_prot) {
   mach_port_t task = mach_task_self();
   vm_size_t size = 0;
-  vm_address_t address = (vm_address_t)sectionStart;
+  vm_address_t address = (vm_address_t)addr;
   memory_object_name_t object;
-#if __LP64__
+#ifdef __LP64__
   mach_msg_type_number_t count = VM_REGION_BASIC_INFO_COUNT_64;
   vm_region_basic_info_data_64_t info;
   kern_return_t info_ret = vm_region_64(
@@ -100,34 +101,32 @@ static vm_prot_t get_protection(void *sectionStart) {
   kern_return_t info_ret = vm_region(task, &address, &size, VM_REGION_BASIC_INFO, (vm_region_info_t)&info, &count, &object);
 #endif
   if (info_ret == KERN_SUCCESS) {
-    return info.protection;
-  } else {
-    return VM_PROT_READ;
-  }
-}
+    if (prot != NULL)
+      *prot = info.protection;
 
+    if (max_prot != NULL)
+      *max_prot = info.max_protection;
+
+    return 0;
+  }
+
+  return -1;
+}
+#endif
 // 根据传入的nl_symbol_ptr/la_symbol_ptr数据段，遍历该数据段的符号，找到其对应的符号名并与传入的符号名进行匹配，命中则进行替换。
 static void perform_rebinding_with_section(struct rebindings_entry *rebindings,
                                            section_t *section,
                                            intptr_t slide,
                                            nlist_t *symtab, // 符号表
-                                           char *strtab, // 字符串表
-                                           uint32_t *indirect_symtab // 动态符号表
-                                           ) {
-  const bool isDataConst = strcmp(section->segname, "__DATA_CONST") == 0;
-  // 符号表访问指针地址替换
-  // `nl_symbol_ptr`和`la_symbol_ptr`section中的`reserved1`字段指明对应在`indirect symbol table`起始的index
-  //  获得该section符号表的起始地址
+                                           char *strtab,    // 字符串表
+                                           uint32_t *indirect_symtab) {
+    // 符号表访问指针地址替换
+    // `nl_symbol_ptr`和`la_symbol_ptr`section中的`reserved1`字段指明对应在`indirect symbol table`起始的index
+    //  获得该section符号表的起始地址
   uint32_t *indirect_symbol_indices = indirect_symtab + section->reserved1;
-  // 得到该section段的所有函数实现地址
+    // 得到该section段的所有函数实现地址
   void **indirect_symbol_bindings = (void **)((uintptr_t)slide + section->addr);
-  vm_prot_t oldProtection = VM_PROT_READ;
-  if (isDataConst) {
-    oldProtection = get_protection(rebindings);
-    // protect()函数可以用来修改一段指定内存区域的保护属性。
-    // 这里暂时将常量区权限改成可读可写
-    mprotect(indirect_symbol_bindings, section->size, PROT_READ | PROT_WRITE);
-  }
+
   for (uint i = 0; i < section->size / sizeof(void *); i++) {
     // 从符号表中取得符号
     uint32_t symtab_index = indirect_symbol_indices[i];
@@ -144,35 +143,36 @@ static void perform_rebinding_with_section(struct rebindings_entry *rebindings,
     struct rebindings_entry *cur = rebindings;
     while (cur) {
       for (uint j = 0; j < cur->rebindings_nel; j++) {
-        if (symbol_name_longer_than_1 &&
-            strcmp(&symbol_name[1], cur->rebindings[j].name) == 0) {
-          // 判断原实现是否有被保存过，既实现和现在表中的实现是否一致
-          if (cur->rebindings[j].replaced != NULL &&
-              indirect_symbol_bindings[i] != cur->rebindings[j].replacement) {
+        if (symbol_name_longer_than_1 && strcmp(&symbol_name[1], cur->rebindings[j].name) == 0) {
+          kern_return_t err;
+            // 判断原实现是否有被保存过，既实现和现在表中的实现是否一致
+          if (cur->rebindings[j].replaced != NULL && indirect_symbol_bindings[i] != cur->rebindings[j].replacement)
             *(cur->rebindings[j].replaced) = indirect_symbol_bindings[i];
+
+          /**
+           * 1. Moved the vm protection modifying codes to here to reduce the
+           *    changing scope.
+           * 2. Adding VM_PROT_WRITE mode unconditionally because vm_region
+           *    API on some iOS/Mac reports mismatch vm protection attributes.
+           * -- Lianfu Hao Jun 16th, 2021
+           **/
+          err = vm_protect (mach_task_self (), (uintptr_t)indirect_symbol_bindings, section->size, 0, VM_PROT_READ | VM_PROT_WRITE | VM_PROT_COPY);
+          if (err == KERN_SUCCESS) {
+            /**
+             * Once we failed to change the vm protection, we
+             * MUST NOT continue the following write actions!
+             * iOS 15 has corrected the const segments prot.
+             * -- Lionfore Hao Jun 11th, 2021
+             **/
+            // 更改函数为新的实现
+            indirect_symbol_bindings[i] = cur->rebindings[j].replacement;
           }
-          // 更改函数为新的实现
-          indirect_symbol_bindings[i] = cur->rebindings[j].replacement;
           goto symbol_loop;
         }
       }
       cur = cur->next;
     }
   symbol_loop:;
-  }
-  // 恢复常量区的访问权限
-  if (isDataConst) {
-    int protection = 0;
-    if (oldProtection & VM_PROT_READ) {
-      protection |= PROT_READ;  // 按位或后赋值
-    }
-    if (oldProtection & VM_PROT_WRITE) {
-      protection |= PROT_WRITE;
-    }
-    if (oldProtection & VM_PROT_EXECUTE) {
-      protection |= PROT_EXEC;
-    }
-    mprotect(indirect_symbol_bindings, section->size, protection);
   }
 }
 
